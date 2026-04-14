@@ -46,6 +46,7 @@ totp-rs = { version = "5.7.0", features = ["otpauth", "gen_secret"] }
 ip2region = "0.1.0"
 migration = { path = "migration" }
 futures-util = "0.3.31"
+url = "2.5"
 
 [features]
 default = []
