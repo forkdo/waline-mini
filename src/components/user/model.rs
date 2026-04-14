@@ -77,6 +77,7 @@ pub struct UserPasswordBody {
 #[derive(Debug, Clone, Deserialize)]
 pub struct OAuthQuery {
   pub r#type: String,
+  #[allow(dead_code)]
   pub redirect: Option<String>,
   pub state: Option<String>,
 }

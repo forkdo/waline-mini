@@ -62,6 +62,7 @@ pub struct CreateDataBody {
   #[serde(default, with = "datetime_utc_format")]
   pub updated_at: Option<chrono::DateTime<Utc>>,
   #[serde(rename = "objectId")]
+  #[allow(dead_code)]
   pub object_id: Option<u32>,
   pub time: Option<i32>,
   pub reaction0: Option<i32>,
@@ -93,6 +94,7 @@ pub struct UpdateDataQuery {
 #[derive(Deserialize)]
 pub struct UpdateDataBody {
   #[serde(rename = "objectId")]
+  #[allow(dead_code)]
   pub object_id: Option<u32>,
   #[serde(rename = "2fa")]
   pub two_factor_auth: Option<String>,

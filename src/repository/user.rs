@@ -12,8 +12,6 @@ pub enum UserQueryBySocial {
   QQ,
   Weibo,
   Github,
-  Twitter,
-  Facebook,
 }
 
 #[derive(Debug, Clone)]
@@ -44,8 +42,6 @@ impl<'a> UserRepository<'a> {
       UserQueryBySocial::QQ => select = select.filter(wl_users::Column::Qq.eq(id)),
       UserQueryBySocial::Weibo => select = select.filter(wl_users::Column::Weibo.eq(id)),
       UserQueryBySocial::Github => select = select.filter(wl_users::Column::Github.eq(id)),
-      UserQueryBySocial::Twitter => select = select.filter(wl_users::Column::Twitter.eq(id)),
-      UserQueryBySocial::Facebook => select = select.filter(wl_users::Column::Facebook.eq(id)),
     }
     select.one(self.db).await
   }

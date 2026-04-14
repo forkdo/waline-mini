@@ -47,12 +47,17 @@ pub struct SecureDomainsService<S> {
 }
 
 impl<S> SecureDomainsService<S> {
-  fn check_domain(&self, domain: String) -> bool {
+  fn check_domain(&self, domain: Option<String>) -> bool {
     if self.secure_domains.is_empty() {
       return true;
     }
-    let v: Vec<&str> = domain.split(":").collect();
-    self.secure_domains.contains(&v[0].to_string())
+    let domain = match domain {
+      Some(d) if !d.is_empty() => d,
+      _ => return true,
+    };
+    let host_port = domain.split("://").last().unwrap_or(&domain);
+    let host = host_port.split(':').next().unwrap_or(host_port);
+    self.secure_domains.contains(&host.to_string())
   }
 }
 
@@ -69,11 +74,15 @@ where
   forward_ready!(service);
 
   fn call(&self, req: ServiceRequest) -> Self::Future {
-    let checking = if let Some(v) = extract_referer(req.request()) {
-      v
-    } else {
-      extract_origin(req.request())
-    };
+    let checking = extract_referer(req.request()).or_else(|| {
+      let origin = extract_origin(req.request());
+      if origin.is_empty() {
+        None
+      } else {
+        Some(origin)
+      }
+    });
+
     if !self.check_domain(checking) {
       return Box::pin(async {
         Ok(req.into_response(HttpResponse::Forbidden().finish().map_into_right_body()))

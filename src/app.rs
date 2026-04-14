@@ -126,6 +126,7 @@ pub fn config_app(cfg: &mut ServiceConfig) {
       .route("/health", web::get().to(health_check)),
   );
   cfg.route("/ui", web::get().to(ui_page));
+  cfg.route("/ui/", web::get().to(ui_page));
   cfg.service(web::scope("/ui").configure(ui::config));
   #[cfg(feature = "leancloud")]
   cfg.route("/", web::get().to(health_check));
