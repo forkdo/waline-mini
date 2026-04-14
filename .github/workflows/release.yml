@@ -45,7 +45,7 @@ jobs:
           archive: $bin-$tag-${{ matrix.target }}
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload leancloud branch
-        if: ${{matrix.target == 'x86_64-unknown-linux-musl'}}
+        if: false
         run: |
           mkdir ./target/leancloud
           cp ./assets/leanengine.yaml ./target/leancloud
@@ -90,5 +90,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            jqiue/waline-mini:${{ github.ref_name }}
-            jqiue/waline-mini:latest
+            forkdo/waline-mini:${{ github.ref_name }}
+            forkdo/waline-mini:latest
