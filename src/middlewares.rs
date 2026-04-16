@@ -81,6 +81,15 @@ where
 
   fn call(&self, req: ServiceRequest) -> Self::Future {
     let path = req.path();
+
+    if path.starts_with("/api/") || path.starts_with("/ui/profile") {
+      return self
+        .service
+        .call(req)
+        .map_ok(ServiceResponse::map_into_left_body)
+        .boxed_local();
+    }
+
     let checking = extract_referer(req.request()).or_else(|| {
       let origin = extract_origin(req.request());
       if origin.is_empty() {
